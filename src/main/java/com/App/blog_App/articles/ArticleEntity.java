@@ -1,5 +1,6 @@
 package com.App.blog_App.articles;
 
+import com.App.blog_App.comments.CommentEntity;
 import com.App.blog_App.common.BaseEntity;
 import com.App.blog_App.users.UserEntity;
 import jakarta.persistence.*;
@@ -14,7 +15,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArticlesEntity extends BaseEntity {
+public class ArticleEntity extends BaseEntity {
 
     @Column(nullable = false, length = 100)
     String title;
@@ -37,4 +38,7 @@ public class ArticlesEntity extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     Set<UserEntity> likers;
+
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    Set<CommentEntity> comments;
 }

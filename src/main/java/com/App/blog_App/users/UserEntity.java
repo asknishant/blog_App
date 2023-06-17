@@ -1,7 +1,7 @@
 package com.App.blog_App.users;
 
 
-import com.App.blog_App.articles.ArticlesEntity;
+import com.App.blog_App.articles.ArticleEntity;
 import com.App.blog_App.common.BaseEntity;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -28,6 +28,19 @@ public class UserEntity extends BaseEntity {
     String bio;
     @Nullable @Setter
     String image;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<ArticleEntity> authoredArticles;
+
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "likers")
-    Set<ArticlesEntity> likedArticles;
+    Set<ArticleEntity> likedArticles;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "followers",
+    joinColumns = @JoinColumn(name = "following_id"),
+    inverseJoinColumns = @JoinColumn(name = "follower_id"))
+    Set<UserEntity> followers;
+
+    @ManyToMany(fetch = FetchType.LAZY )
+    Set<UserEntity> following;
 }
